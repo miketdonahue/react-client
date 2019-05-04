@@ -1,0 +1,83 @@
+{
+  "name": "react-client",
+  "version": "1.0.0",
+  "description": "A React client built with Next.js",
+  "main": ".next/server/index.js",
+  "repository": "https://github.com/meebix/react-client.git",
+  "author": "Michael Donahue <mtdonahue1@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "yarn build:client && yarn build:server",
+    "build:client": "tsc && next build",
+    "build:server": "tsc -p tsconfig.server.json && babel server -d .next/server --extensions '.ts'",
+    "start": "NODE_ENV=production node .next/server",
+    "dev": "babel-node --extensions '.ts,.tsx' server/index.ts",
+    "lint": "eslint . --ext '.ts,.tsx'",
+    "prettier:fix": "prettier \"**/*.{ts,tsx}\" --write"
+  },
+  "dependencies": {
+    "config": "^3.1.0",
+    "express": "^4.16.4",
+    "express-healthcheck": "^0.1.0",
+    "helmet": "^3.16.0",
+    "next": "^8.1.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "semantic-ui-react": "^0.86.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-typescript": "^7.3.3",
+    "@commitlint/cli": "^7.5.2",
+    "@commitlint/config-conventional": "^7.5.0",
+    "@semantic-release/changelog": "^3.0.2",
+    "@semantic-release/git": "^7.0.8",
+    "@types/config": "^0.0.34",
+    "@types/cors": "^2.8.5",
+    "@types/express": "^4.16.1",
+    "@types/helmet": "^0.0.43",
+    "@types/node": "^11.13.8",
+    "@typescript-eslint/eslint-plugin": "^1.7.0",
+    "@typescript-eslint/parser": "^1.7.0",
+    "@zeit/next-less": "^1.0.1",
+    "@zeit/next-typescript": "^1.1.1",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-typescript": "^3.0.0",
+    "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-eslint-comments": "^3.1.1",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4",
+    "file-loader": "^3.0.1",
+    "husky": "^2.1.0",
+    "less": "^3.9.0",
+    "lint-staged": "^8.1.5",
+    "prettier": "^1.16.4",
+    "semantic-release": "^15.13.3",
+    "semantic-ui-less": "^2.4.1",
+    "typescript": "^3.4.5",
+    "url-loader": "^1.1.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "concurrent": true,
+    "linters": {
+      "*.{ts,tsx}": [
+        "yarn prettier:fix",
+        "yarn lint",
+        "git add"
+      ]
+    }
+  }
+}
