@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "config:base",
+    "schedule:earlyMondays",
+    ":semanticCommitTypeAll(ci)",
+    ":semanticCommitScopeDisabled",
+    ":pinOnlyDevDependencies"
+  ],
+  "baseBranches": ["dev"],
+  "separateMultipleMajor": true
+}
