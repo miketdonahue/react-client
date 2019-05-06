@@ -3,8 +3,8 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es2017",
-    "lib": ["es2017"],
-    "outDir": ".next/server"
+    "lib": ["es2017"]
   },
-  "include": ["./**/*.ts"]
+  "include": ["server/**/*"],
+  "exclude": [".next"]
 }

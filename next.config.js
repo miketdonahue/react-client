@@ -1,6 +1,6 @@
-import path from 'path';
-import withTypescript from '@zeit/next-typescript';
-import withLess from '@zeit/next-less';
+const path = require('path');
+const withTypescript = require('@zeit/next-typescript');
+const withLess = require('@zeit/next-less');
 
 module.exports = withTypescript(
   withLess({

@@ -1,0 +1,7 @@
+{
+  "restartable": "rs",
+  "ignoreRoot": [".git"],
+  "verbose": false,
+  "watch": ["server/", "next.config.js"],
+  "ext": "ts"
+}
