@@ -11,10 +11,21 @@ module.exports = {
   ],
   rules: {
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    'import/prefer-default-export': false,
+    'lines-between-class-members': [
+      'error',
+      'always',
+      { exceptAfterSingleLine: true },
+    ],
+    '@typescript-eslint/explicit-function-return-type': [
+      'error',
+      { allowExpressions: true },
+    ],
 
     // Rules turned off for Next.js
     'react/react-in-jsx-scope': false,
     'jsx-a11y/anchor-is-valid': false,
+    'jsx-a11y/label-has-for': false,
   },
   overrides: [
     {

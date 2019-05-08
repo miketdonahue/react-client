@@ -19,5 +19,5 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true
   },
-  "exclude": [".next", "server/**/*"]
+  "exclude": ["node_modules", ".next", "server/**/*"]
 }
