@@ -1,0 +1,19 @@
+input UpdateUserInput {
+  userId: String!
+  data: UserInput
+}
+
+# Nested inputs
+input UserInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  phoneCountryCode: String
+  phone: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  postalCode: String
+}

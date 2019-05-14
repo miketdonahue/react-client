@@ -1,0 +1,8 @@
+type Customer {
+  id: ID! @unique
+  user: User!
+  stripeId: String! @unique
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  deletedAt: DateTime
+}

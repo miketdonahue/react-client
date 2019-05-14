@@ -1,0 +1,42 @@
+type User {
+  id: ID! @unique
+  role: Role!
+  userAccount: UserAccount!
+  customerAccount: Customer
+  firstName: String
+  lastName: String
+  email: String! @unique
+  password: String!
+  phoneCountryCode: String
+  phone: String
+  country: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  postalCode: String
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  deletedAt: DateTime
+}
+
+type UserAccount {
+  id: ID! @unique
+  user: User!
+  confirmed: Boolean! @default(value: "false")
+  confirmedCode: Int @unique
+  confirmedExpires: String
+  locked: Boolean! @default(value: "false")
+  lockedCode: Int @unique
+  lockedExpires: String
+  resetPasswordCode: Int @unique
+  resetPasswordExpires: String
+  securityQuestions: [SecurityQuestionAnswer]
+  loginAttempts: Int! @default(value: 0)
+  securityQuestionAttempts: Int! @default(value: 0)
+  lastVisit: DateTime
+  ip: String
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  deletedAt: DateTime
+}

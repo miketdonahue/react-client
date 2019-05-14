@@ -1,0 +1,23 @@
+# The HTTP endpoint for your Prisma API
+endpoint: 'http://localhost:4466'
+
+# Points to the file that contains your datamodel
+datamodel:
+  - server/prisma/models/role.prisma
+  - server/prisma/models/user.prisma
+  - server/prisma/models/security-question.prisma
+  - server/prisma/models/customer.prisma
+
+# Specifies language & location for the generated Prisma client
+generate:
+  - generator: typescript-client
+    output: server/prisma/generated/prisma-client
+
+# Seed the database with initial data
+seed:
+  run: babel-node --presets @babel/preset-typescript --extensions .ts ./server/seeders/seed.ts
+
+# Setup hooks for different stages of deployment
+hooks:
+  post-deploy:
+    - prisma generate

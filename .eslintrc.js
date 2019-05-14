@@ -11,7 +11,7 @@ module.exports = {
   ],
   rules: {
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
-    'import/prefer-default-export': false,
+    'import/prefer-default-export': 0,
     'lines-between-class-members': [
       'error',
       'always',
@@ -21,11 +21,15 @@ module.exports = {
       'error',
       { allowExpressions: true },
     ],
+    'no-underscore-dangle': ['error', { allow: ['_headers'] }],
+    'no-restricted-syntax': 0,
+    'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
+    'eslint-comments/disable-enable-pair': ['error', { allowWholeFile: true }],
 
     // Rules turned off for Next.js
-    'react/react-in-jsx-scope': false,
-    'jsx-a11y/anchor-is-valid': false,
-    'jsx-a11y/label-has-for': false,
+    'react/react-in-jsx-scope': 0,
+    'jsx-a11y/anchor-is-valid': 0,
+    'jsx-a11y/label-has-for': 0,
   },
   overrides: [
     {

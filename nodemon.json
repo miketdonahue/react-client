@@ -2,6 +2,6 @@
   "restartable": "rs",
   "ignoreRoot": [".git"],
   "verbose": false,
-  "watch": ["server/", "next.config.js"],
-  "ext": "ts"
+  "watch": ["config", "server/", "next.config.js"],
+  "ext": "ts json graphql"
 }

@@ -2,8 +2,9 @@ import React from 'react';
 import App, { Container } from 'next/app';
 import { ApolloProvider } from 'react-apollo';
 import withApolloClient from '../apollo/with-apollo';
+import '../styles/semantic.less';
 
-class ApolloApp extends App {
+class NextApp extends App {
   public render(): any {
     const { Component, pageProps, apolloClient } = this.props;
 
@@ -19,4 +20,4 @@ class ApolloApp extends App {
   private props: any;
 }
 
-export default withApolloClient(ApolloApp);
+export default withApolloClient(NextApp);

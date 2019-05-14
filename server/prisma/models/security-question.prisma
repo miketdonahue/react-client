@@ -1,0 +1,12 @@
+type SecurityQuestion {
+  id: ID! @unique
+  shortName: String! @unique
+  question: String!
+}
+
+type SecurityQuestionAnswer {
+  id: ID! @unique
+  userAccount: UserAccount!
+  userSecurityQuestion: SecurityQuestion!
+  answer: String!
+}

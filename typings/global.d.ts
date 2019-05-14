@@ -3,3 +3,9 @@ declare namespace NodeJS {
     browser: boolean;
   }
 }
+
+declare namespace config {
+  interface Config {
+    server: object;
+  }
+}

@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Button, Form } from 'semantic-ui-react';
 
 export default class Login extends Component {
   public state = {
@@ -20,33 +21,31 @@ export default class Login extends Component {
     const { email, password } = this.state;
 
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <div>
-            <label htmlFor="email">
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={this.handleChange}
-              />
-              Email
-            </label>
-          </div>
-          <div>
-            <label htmlFor="password">
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={this.handleChange}
-              />
-              Password
-            </label>
-          </div>
-          <button type="submit">Login</button>
-        </form>
-      </div>
+      <Form onSubmit={this.handleSubmit}>
+        <Form.Field>
+          <label htmlFor="email">
+            Email
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={this.handleChange}
+            />
+          </label>
+        </Form.Field>
+        <Form.Field>
+          <label htmlFor="password">
+            Password
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={this.handleChange}
+            />
+          </label>
+        </Form.Field>
+        <Button type="submit">Login</Button>
+      </Form>
     );
   }
 }

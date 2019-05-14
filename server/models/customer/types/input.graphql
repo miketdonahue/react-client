@@ -1,0 +1,7 @@
+input CreateCustomerInput {
+  userId: String
+}
+
+input UpdateCustomerInput {
+  userId: String
+}

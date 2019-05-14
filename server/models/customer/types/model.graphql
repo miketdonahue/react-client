@@ -1,0 +1,8 @@
+type Customer {
+  id: ID!
+  user: User!
+  stripeId: String!
+  updatedAt: String!
+  createdAt: String!
+  deletedAt: String
+}

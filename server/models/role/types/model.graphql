@@ -1,0 +1,9 @@
+type Role {
+  id: ID!
+  name: RoleName!
+}
+
+# Enums
+enum RoleName {
+  USER
+}

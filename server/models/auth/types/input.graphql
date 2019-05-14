@@ -1,0 +1,54 @@
+input RegisterUserInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
+input ConfirmUserInput {
+  code: Int!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+input UserSecurityQuestionInput {
+  email: String!
+  answers: [SecurityQuestionAnswerInput!]!
+}
+
+input UserSecurityQuestionAnswerInput {
+  userId: String!
+}
+
+input ResetPasswordInput {
+  email: String!
+}
+
+input ChangePasswordInput {
+  code: Int!
+  password: String!
+}
+
+input UnlockAccountInput {
+  code: Int!
+}
+
+input SendAuthEmail {
+  email: String!
+  type: EmailType!
+}
+
+# Nested inputs
+input SecurityQuestionAnswerInput {
+  shortName: String!
+  answer: String!
+}
+
+# Enums
+enum EmailType {
+  CONFIRMATION_EMAIL
+  UNLOCK_ACCOUNT_EMAIL
+}

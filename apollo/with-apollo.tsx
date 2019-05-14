@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { getDataFromTree } from 'react-apollo';
 import initApollo from './init';
+import initialState from './initial-state';
 
 export default function withApolloClient(App): any {
   return class ApolloClient extends React.Component {
@@ -17,7 +18,7 @@ export default function withApolloClient(App): any {
       const { Component, router } = ctx;
       let appProps = {};
       const apollo = initApollo();
-      const apolloState = apollo.extract();
+      const apolloState = apollo.cache.extract() || initialState;
 
       if (App.getInitialProps) {
         appProps = await App.getInitialProps(ctx);
