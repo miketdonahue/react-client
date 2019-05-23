@@ -1,15 +1,15 @@
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
-import config from 'config';
 import addHours from 'date-fns/add_hours';
-import generateCode from '../../../modules/code';
-import { InternalError } from '../../../modules/errors';
-import logger from '../../../modules/logger';
+import config from '@config';
+import generateCode from '@server/modules/code';
+import { InternalError } from '@server/modules/errors';
+import logger from '@server/modules/logger';
 import mailer, {
   WELCOME_EMAIL,
   CONFIRMATION_EMAIL,
   UNLOCK_ACCOUNT_EMAIL,
-} from '../../../modules/mailer';
+} from '@server/modules/mailer';
 import * as fragments from '../fragments';
 
 /**
@@ -41,13 +41,13 @@ const registerUser = async (parent, args, context, info): Promise<any> => {
       email: args.input.email,
       password,
       userAccount: {
-        create: config.get('server.auth.confirmable')
+        create: config.server.auth.confirmable
           ? {
               confirmedCode: generateCode(),
               confirmedExpires: String(
                 addHours(
                   new Date(),
-                  config.get('server.auth.codes.expireTime.confirmed')
+                  config.server.auth.codes.expireTime.confirmed
                 )
               ),
             }
@@ -59,11 +59,11 @@ const registerUser = async (parent, args, context, info): Promise<any> => {
   logger.info('AUTH-RESOLVER: Signing token');
   const token = jwt.sign(
     { cuid: user.id, role: user.role.name },
-    config.get('server.auth.jwt.secret'),
-    { expiresIn: config.get('server.auth.jwt.expireTime') }
+    config.server.auth.jwt.secret,
+    { expiresIn: config.server.auth.jwt.expireTime }
   );
 
-  const emailType = config.get('server.auth.confirmable')
+  const emailType = config.server.auth.confirmable
     ? CONFIRMATION_EMAIL
     : WELCOME_EMAIL;
 
@@ -134,13 +134,10 @@ const loginUser = async (parent, args, context, info): Promise<any> => {
           loginAttempts: user.userAccount.loginAttempts + 1,
           locked:
             user.userAccount.loginAttempts >=
-            config.get('server.auth.lockable.maxAttempts'),
+            config.server.auth.lockable.maxAttempts,
           lockedCode: generateCode(),
           lockedExpires: String(
-            addHours(
-              new Date(),
-              config.get('server.auth.codes.expireTime.locked')
-            )
+            addHours(new Date(), config.server.auth.codes.expireTime.locked)
           ),
         }
       : {
@@ -161,8 +158,8 @@ const loginUser = async (parent, args, context, info): Promise<any> => {
   logger.info('AUTH-RESOLVER: Signing token');
   const token = jwt.sign(
     { cuid: user.id, role: user.role.name },
-    config.get('server.auth.jwt.secret'),
-    { expiresIn: config.get('server.auth.jwt.expireTime') }
+    config.server.auth.jwt.secret,
+    { expiresIn: config.server.auth.jwt.expireTime }
   );
 
   return {
@@ -187,7 +184,7 @@ const setUserSecurityQuestionAnswers = async (
   context,
   info
 ): Promise<any> => {
-  const queue = [];
+  const queue: any = [];
   const userAccount = await context.prisma
     .user({ id: args.input.userId })
     .userAccount()
@@ -289,19 +286,16 @@ const verifyUserSecurityQuestionAnswers = async (
       },
     });
 
-  if (config.get('server.auth.securityQuestions.number') !== answers.length) {
+  if (config.server.auth.securityQuestions.number !== answers.length) {
     await context.prisma.updateUserAccount({
       data: {
         securityQuestionAttempts: user.userAccount.securityQuestionAttempts + 1,
         locked:
           user.userAccount.securityQuestionAttempts >=
-          config.get('server.auth.lockable.maxAttempts'),
+          config.server.auth.lockable.maxAttempts,
         lockedCode: generateCode(),
         lockedExpires: String(
-          addHours(
-            new Date(),
-            config.get('server.auth.codes.expireTime.locked')
-          )
+          addHours(new Date(), config.server.auth.codes.expireTime.locked)
         ),
       },
       where: {
@@ -341,10 +335,7 @@ const resetPassword = async (parent, args, context, info): Promise<any> => {
     data: {
       resetPasswordCode: generateCode(),
       resetPasswordExpires: String(
-        addHours(
-          new Date(),
-          config.get('server.auth.codes.expireTime.passwordReset')
-        )
+        addHours(new Date(), config.server.auth.codes.expireTime.passwordReset)
       ),
     },
     where: {

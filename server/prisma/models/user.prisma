@@ -1,5 +1,5 @@
 type User {
-  id: ID! @unique
+  id: ID! @id @unique
   role: Role!
   userAccount: UserAccount!
   customerAccount: Customer
@@ -21,7 +21,7 @@ type User {
 }
 
 type UserAccount {
-  id: ID! @unique
+  id: ID! @id @unique
   user: User!
   confirmed: Boolean! @default(value: "false")
   confirmedCode: Int @unique

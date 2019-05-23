@@ -1,4 +1,4 @@
-import logger from '../../../modules/logger';
+import logger from '@server/modules/logger';
 
 /**
  * Resolver the "user account" relation

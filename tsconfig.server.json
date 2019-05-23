@@ -3,7 +3,9 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es2017",
-    "lib": ["es2017"]
+    "lib": ["es2017"],
+    "noEmit": false,
+    "outDir": ".next"
   },
   "include": ["server/**/*"],
   "exclude": ["node_modules", ".next"]

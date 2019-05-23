@@ -2,26 +2,30 @@ import React from 'react';
 import Head from 'next/head';
 import { getDataFromTree } from 'react-apollo';
 import initApollo from './init';
-import initialState from './initial-state';
 
 export default function withApolloClient(App): any {
   return class ApolloClient extends React.Component {
-    public static displayName = `WithApollo(App)`;
+    public static displayName = `WithApollo(${App.displayName ||
+      App.name ||
+      'Unknown'})`;
+
+    public props: any;
+    private apolloClient: any;
 
     public constructor(props) {
       super(props);
 
-      this.apolloClient = initApollo(props.apolloState);
+      this.apolloClient = initApollo(props.state, {});
     }
 
-    public static async getInitialProps(ctx): Promise<any> {
-      const { Component, router } = ctx;
+    public static async getInitialProps(context): Promise<any> {
+      const { Component, router, ctx } = context;
       let appProps = {};
-      const apollo = initApollo();
-      const apolloState = apollo.cache.extract() || initialState;
+      const apollo = initApollo({}, { cookies: ctx.req.cookies });
+      const cache = apollo.cache.extract();
 
       if (App.getInitialProps) {
-        appProps = await App.getInitialProps(ctx);
+        appProps = await App.getInitialProps(context);
       }
 
       if (!process.browser) {
@@ -34,8 +38,8 @@ export default function withApolloClient(App): any {
               apolloClient={apollo}
             />
           );
-        } catch (error) {
-          console.error('Error while running `getDataFromTree`', error);
+        } catch (err) {
+          console.log('Error while running `getDataFromTree`', err);
         }
 
         Head.rewind();
@@ -43,12 +47,9 @@ export default function withApolloClient(App): any {
 
       return {
         ...appProps,
-        apolloState,
+        cache,
       };
     }
-
-    private apolloClient: any;
-    public props: any;
 
     public render(): any {
       return <App {...this.props} apolloClient={this.apolloClient} />;

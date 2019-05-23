@@ -1,11 +1,3 @@
 {
-  "presets": ["next/babel", "@zeit/next-typescript/babel"],
-  "overrides": [
-    {
-      "test": ["./server"],
-      "presets": [
-        ["next/babel", { "preset-env": { "targets": { "node": "current" } } }]
-      ]
-    }
-  ]
+  "presets": ["next/babel", "@zeit/next-typescript/babel"]
 }

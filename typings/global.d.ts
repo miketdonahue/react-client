@@ -4,8 +4,10 @@ declare namespace NodeJS {
   }
 }
 
-declare namespace config {
-  interface Config {
-    server: object;
-  }
+declare module '*.graphql' {
+  import { DocumentNode } from 'graphql';
+
+  const value: DocumentNode;
+
+  export = value;
 }

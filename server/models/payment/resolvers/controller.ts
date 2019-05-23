@@ -1,5 +1,5 @@
 import stripeSdk from 'stripe';
-import { ExternalError } from '../../../modules/errors';
+import { ExternalError } from '@server/modules/errors';
 
 const stripe = stripeSdk(process.env.STRIPE);
 

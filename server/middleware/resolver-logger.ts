@@ -1,5 +1,5 @@
-import config from 'config';
-import logger from '../modules/logger';
+import config from '@config';
+import logger from '@server/modules/logger';
 
 /**
  * Logs metadata for each resolver request via middleware
@@ -14,8 +14,7 @@ import logger from '../modules/logger';
  */
 const resolverLogger = (resolve, parent, args, context, info): any => {
   const cuid =
-    (config.get('server.auth.enabled') && context.user && context.user.cuid) ||
-    null;
+    (config.server.auth.enabled && context.user && context.user.cuid) || null;
 
   logger.info({ cuid, args }, `Metadata for resolver: ${info.fieldName}`);
 

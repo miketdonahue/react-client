@@ -1,5 +1,5 @@
 import SparkPost from 'sparkpost';
-import config from 'config';
+import config from '@config';
 import logger from '../logger';
 import { ExternalError } from '../errors';
 
@@ -17,8 +17,8 @@ const emailClient = new SparkPost(process.env.SPARKPOST);
  * @param {Object} options.substitutionData - SparkPost email template data
  * @returns {Promise}
  */
-export const send = async (user, options): any => {
-  if (!config.get('server.mailer.sendEmails')) {
+export const send = async (user, options): Promise<any> => {
+  if (!config.server.mailer.sendEmails) {
     return new Promise(resolve => resolve());
   }
 

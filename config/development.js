@@ -1,4 +1,7 @@
-export default {
+const merge = require('deepmerge');
+const defaultConfig = require('./default');
+
+module.exports = merge(defaultConfig, {
   server: {
     host: 'http://localhost',
     logger: {
@@ -36,6 +39,13 @@ export default {
         'cdn.jsdelivr.net',
         'graphcool-playground.netlify.com',
       ],
+      connectSrc: ["'self'", 'devtools.apollodata.com'],
+    },
+    dirs: {
+      types: 'models/**/types/*.graphql',
+      resolvers: 'models/**/resolvers/*.ts',
+      access: 'server/models/**/access.ts',
+      validations: 'server/models/**/validations.ts',
     },
   },
-};
+});

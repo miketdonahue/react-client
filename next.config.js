@@ -1,18 +1,21 @@
 const path = require('path');
-const config = require('config');
 const withTypescript = require('@zeit/next-typescript');
 const withLess = require('@zeit/next-less');
 
 module.exports = withTypescript(
   withLess({
-    publicRuntimeConfig: config,
     webpack: (configuration, { dev }) => {
       const config = configuration;
 
-      config.resolve.alias['../../theme.config$'] = path.join(
-        __dirname,
-        'styles/theme.config'
-      );
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        '@config': path.resolve(__dirname, 'config'),
+        '@server': path.resolve(__dirname, 'server'),
+        '../../theme.config$': path.join(
+          __dirname,
+          'client/styles/theme.config'
+        ),
+      };
 
       config.module.rules.push(
         {

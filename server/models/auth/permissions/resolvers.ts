@@ -1,7 +1,7 @@
 import { rule } from 'graphql-shield';
-import config from 'config';
 import isBefore from 'date-fns/is_before';
-import { InternalError } from '../../../modules/errors';
+import { InternalError } from '@server/modules/errors';
+import config from '@config';
 
 /**
  * Checks if user account has been confirmed
@@ -15,7 +15,7 @@ import { InternalError } from '../../../modules/errors';
  * @returns {Error|Boolean}
  */
 export const accountConfirmed = rule()(async (parent, args, context, info) => {
-  if (!config.get('server.auth.confirmable')) {
+  if (!config.server.auth.confirmable) {
     return true;
   }
 
@@ -47,7 +47,7 @@ export const accountConfirmed = rule()(async (parent, args, context, info) => {
  */
 export const confirmationCodeNotExpired = rule()(
   async (parent, args, context, info) => {
-    if (!config.get('server.auth.confirmable')) {
+    if (!config.server.auth.confirmable) {
       return true;
     }
 
@@ -79,7 +79,7 @@ export const confirmationCodeNotExpired = rule()(
  * @returns {Error|Boolean}
  */
 export const accountUnlocked = rule()(async (parent, args, context, info) => {
-  if (!config.get('server.auth.lockable.enabled')) {
+  if (!config.server.auth.lockable.enabled) {
     return true;
   }
 

@@ -1,17 +1,17 @@
-import config from 'config';
 import { inputRule } from 'graphql-shield';
 import {
   alpha,
   alphaNumeric,
   code,
   email,
-} from '../../modules/validation-rules';
+} from '@server/modules/validation-rules';
+import config from '@config';
 
 const answers = (yup): any =>
   yup
     .array()
     .of(yup.object())
-    .min(config.get('server.auth.securityQuestions.number'));
+    .min(config.server.auth.securityQuestions.number);
 
 /**
  * Input validations for types and resolvers

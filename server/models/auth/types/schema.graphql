@@ -1,10 +1,10 @@
-type Query {
+extend type Query {
   getUserSecurityQuestionAnswers(
     input: UserSecurityQuestionAnswerInput!
   ): [SecurityQuestionAnswer]
 }
 
-type Mutation {
+extend type Mutation {
   registerUser(input: RegisterUserInput!): AuthPayload
   confirmUser(input: ConfirmUserInput!): String
   loginUser(input: LoginUserInput!): AuthPayload

@@ -1,0 +1,5 @@
+query getCacheApp {
+  app @client {
+    isLoggedIn
+  }
+}

@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import { prisma } from '../prisma/generated/prisma-client';
+import { prisma } from '@server/prisma/generated/prisma-client';
 
 const questions = [
   {

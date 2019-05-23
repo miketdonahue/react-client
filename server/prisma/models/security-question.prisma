@@ -1,12 +1,18 @@
 type SecurityQuestion {
-  id: ID! @unique
+  id: ID! @id @unique
   shortName: String! @unique
   question: String!
+  updatedAt: DateTime! @updatedAt
+  createdAt: DateTime! @createdAt
+  deletedAt: DateTime
 }
 
 type SecurityQuestionAnswer {
-  id: ID! @unique
+  id: ID! @id @unique
   userAccount: UserAccount!
   userSecurityQuestion: SecurityQuestion!
   answer: String!
+  updatedAt: DateTime! @updatedAt
+  createdAt: DateTime! @createdAt
+  deletedAt: DateTime
 }

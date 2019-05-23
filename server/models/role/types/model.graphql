@@ -1,6 +1,9 @@
 type Role {
   id: ID!
   name: RoleName!
+  updatedAt: String!
+  createdAt: String!
+  deletedAt: String
 }
 
 # Enums

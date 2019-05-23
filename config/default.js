@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   client: {
     dirs: {
       types: 'pages/**/types/*.graphql',
@@ -18,7 +18,7 @@ export default {
       confirmable: true,
       jwt: {
         secret: process.env.JWT_SECRET,
-        expireTime: '1h',
+        expiresIn: '30m',
       },
       codes: {
         // time in minutes
@@ -49,9 +49,9 @@ export default {
     },
     dirs: {
       types: 'models/**/types/*.graphql',
-      resolvers: 'models/**/resolvers/*.ts',
-      access: 'server/models/**/access.ts',
-      validations: 'server/models/**/validations.ts',
+      resolvers: 'models/**/resolvers/*.js',
+      access: 'server/models/**/access.js',
+      validations: 'server/models/**/validations.js',
     },
   },
 };

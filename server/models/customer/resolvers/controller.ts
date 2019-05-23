@@ -1,6 +1,6 @@
 import stripeSdk from 'stripe';
-import logger from '../../../modules/logger';
-import { InternalError, ExternalError } from '../../../modules/errors';
+import logger from '@server/modules/logger';
+import { InternalError, ExternalError } from '@server/modules/errors';
 
 const stripe = stripeSdk(process.env.STRIPE);
 

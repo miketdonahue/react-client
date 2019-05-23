@@ -17,7 +17,11 @@
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "skipLibCheck": true
-  },
-  "exclude": ["node_modules", ".next", "server/**/*"]
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@config": ["config"],
+      "@server/*": ["server/*"]
+    }
+  }
 }

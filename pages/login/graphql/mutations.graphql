@@ -1,0 +1,9 @@
+mutation loginUser($input: LoginUserInput!) {
+  user: loginUser(input: $input) {
+    token
+  }
+}
+
+mutation setIsLoggedIn($input: AuthPayload!) {
+  setIsLoggedIn(input: $input) @client
+}

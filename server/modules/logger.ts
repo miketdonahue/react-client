@@ -1,9 +1,9 @@
 import pino from 'pino';
 import path from 'path';
 import uuid from 'uuid/v4';
-import config from 'config';
+import config from '@config';
 
-let destination = path.join(process.cwd(), 'logs/app.log');
+let destination = path.join(process.cwd(), 'server/logs/app.log');
 
 if (process.env.NODE_ENV !== 'production') {
   destination = pino.destination(1);
@@ -17,13 +17,13 @@ if (process.env.NODE_ENV !== 'production') {
 const defaultLogger = pino(
   {
     name: 'graphql-server',
-    level: config.get('server.logger.level'),
-    enable: config.get('server.logger.enabled'),
+    level: config.server.logger.level,
+    enable: config.server.logger.enabled,
     redact: {
       paths: [],
       remove: true,
     },
-    prettyPrint: config.get('server.logger.pretty'),
+    prettyPrint: config.server.logger.pretty,
   },
   destination
 );

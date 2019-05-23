@@ -1,11 +1,11 @@
 import path from 'path';
-import config from 'config';
 import { shield } from 'graphql-shield';
 import assign from 'assign-deep';
-import { fileLoader } from 'merge-graphql-schemas';
+import config from '@config';
+import fileLoader from '../../utils/node-file-loader';
 
 const validationsArray = fileLoader(
-  path.join(process.cwd(), config.get('server.dirs.validations'))
+  path.join(process.cwd(), config.server.dirs.validations)
 );
 
 /**

@@ -1,4 +1,4 @@
-import { isAuthenticated } from '../../modules/access-rules';
+import { isAuthenticated } from '@server/modules/access-rules';
 
 /**
  * Access permissions for types and resolvers

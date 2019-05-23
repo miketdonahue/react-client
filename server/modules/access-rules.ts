@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { rule } from 'graphql-shield';
-import config from 'config';
+import config from '@config';
 import { ExternalError } from './errors';
 
 /**
@@ -16,7 +16,7 @@ import { ExternalError } from './errors';
  */
 export const isAuthenticated = rule()(async (parent, args, context, info) => {
   // Skip authentication if auth is turned off
-  if (!config.get('server.auth.enabled')) {
+  if (!config.server.auth.enabled) {
     return true;
   }
 
@@ -37,7 +37,8 @@ export const isAuthenticated = rule()(async (parent, args, context, info) => {
 
   return jwt.verify(
     token,
-    config.get('server.auth.jwt.secret'),
+    config.server.auth.jwt.secret,
+    { expiresIn: config.server.auth.jwt.expiresIn },
     (err, decoded) => {
       if (err) {
         return new ExternalError(err, { source: 'JsonWebToken' });

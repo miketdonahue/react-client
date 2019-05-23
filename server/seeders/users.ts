@@ -1,9 +1,9 @@
 /* eslint-disable no-await-in-loop */
 import argon2 from 'argon2';
-import config from 'config';
 import addHours from 'date-fns/add_hours';
 import { Chance } from 'chance';
-import { prisma } from '../prisma/generated/prisma-client';
+import config from '@config';
+import { prisma } from '@server/prisma/generated/prisma-client';
 import generateCode from '../modules/code';
 
 const chance = new Chance();
@@ -27,7 +27,7 @@ export default async () => {
     const role = await prisma.role({ name: 'USER' });
 
     await prisma.createUser({
-      role: { connect: { id: role.id } },
+      role: { connect: { id: role && role.id } },
       firstName: chance.first(),
       lastName: chance.last(),
       email,
@@ -40,13 +40,13 @@ export default async () => {
       state: chance.state(),
       postalCode: chance.zip(),
       userAccount: {
-        create: config.get('server.auth.confirmable')
+        create: config.server.auth.confirmable
           ? {
               confirmedCode: generateCode(),
               confirmedExpires: String(
                 addHours(
                   new Date(),
-                  config.get('server.auth.codes.expireTime.confirmed')
+                  config.server.auth.codes.expireTime.confirmed
                 )
               ),
             }

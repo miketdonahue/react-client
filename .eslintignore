@@ -1,4 +1,8 @@
 .next
+config
 node_modules
 next.config.js
+webpack.server.js
 server/prisma/generated
+
+utils
