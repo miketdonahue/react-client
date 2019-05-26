@@ -17,6 +17,7 @@ const serverConfig = {
   resolve: {
     alias: {
       '@config': path.resolve(__dirname, 'config'),
+      '@client': path.resolve(__dirname, 'client'),
       '@server': path.resolve(__dirname, 'server'),
     },
     extensions: ['.ts', '.tsx', '.js'],

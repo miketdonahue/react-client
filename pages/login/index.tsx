@@ -1,95 +1,94 @@
-import { PureComponent } from 'react';
+import { Fragment } from 'react';
+import { withFormik } from 'formik';
 import { Button, Form } from 'semantic-ui-react';
-import { ApolloConsumer, Mutation } from 'react-apollo';
+import { withApollo, compose } from 'react-apollo';
+import ServerError from '@client/components/server-error';
+import withServerErrors from '@client/components/hoc/with-server-errors';
+import { loginSchema } from './validations';
 import * as mutations from './graphql/mutations.graphql';
 
 interface Props {
+  client: any;
+  formatServerErrors: (array) => void;
   setIsLoggedIn: (object) => void;
 }
 
 interface State {
   email: string;
   password: string;
+  errors?: any;
 }
 
-interface Data {
-  user: {
-    token: string;
-  };
-}
+const Login = ({
+  values,
+  handleChange,
+  handleSubmit,
+  errors,
+  touched,
+  serverErrors,
+}): any => (
+  <Fragment>
+    <ServerError errors={serverErrors} />
 
-class Login extends PureComponent<Props, State> {
-  public state = {
-    email: '',
-    password: '',
-  };
+    <Form onSubmit={handleSubmit}>
+      <Form.Field>
+        <label htmlFor="email">
+          Email
+          <input
+            id="email"
+            type="email"
+            value={values.email}
+            onChange={handleChange}
+          />
+        </label>
+        {errors.email && touched.email ? <div>{errors.email}</div> : null}
+      </Form.Field>
+      <Form.Field>
+        <label htmlFor="password">
+          Password
+          <input
+            id="password"
+            type="password"
+            value={values.password}
+            onChange={handleChange}
+          />
+        </label>
+      </Form.Field>
+      <Button type="submit">Login</Button>
+    </Form>
+  </Fragment>
+);
 
-  private handleChange = event => {
-    this.setState({
-      [event.target.id]: event.target.value,
-    } as any);
-  };
-
-  private handleSubmit = (event, loginUser) => {
-    event.preventDefault();
-
-    const { email, password } = this.state;
-
-    loginUser({ variables: { input: { email, password } } });
-  };
-
-  public render(): any {
-    const { email, password } = this.state;
-
-    return (
-      <ApolloConsumer>
-        {client => (
-          <Mutation<Data>
-            mutation={mutations.loginUser}
-            onCompleted={({ user }) =>
-              client.mutate({
-                mutation: mutations.setIsLoggedIn,
-                variables: { input: { token: user.token } },
-              })
-            }
-          >
-            {(loginUser, { loading, error }): any => {
-              if (loading) return <div>Loading...</div>;
-              if (error) return <p>An error occurred</p>;
-
-              return (
-                <Form onSubmit={e => this.handleSubmit(e, loginUser)}>
-                  <Form.Field>
-                    <label htmlFor="email">
-                      Email
-                      <input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={this.handleChange}
-                      />
-                    </label>
-                  </Form.Field>
-                  <Form.Field>
-                    <label htmlFor="password">
-                      Password
-                      <input
-                        id="password"
-                        type="password"
-                        value={password}
-                        onChange={this.handleChange}
-                      />
-                    </label>
-                  </Form.Field>
-                  <Button type="submit">Login</Button>
-                </Form>
-              );
-            }}
-          </Mutation>
-        )}
-      </ApolloConsumer>
-    );
-  }
-}
-
-export default Login;
+export default compose(
+  withApollo,
+  withServerErrors,
+  withFormik<Props, State>({
+    displayName: 'LoginForm',
+    mapPropsToValues: () => ({
+      email: '',
+      password: '',
+    }),
+    validationSchema: loginSchema,
+    handleSubmit: (
+      values,
+      { setSubmitting, props: { client, formatServerErrors } }
+    ) => {
+      client
+        .mutate({
+          mutation: mutations.loginUser,
+          variables: {
+            input: { email: values.email, password: values.password },
+          },
+        })
+        .then(({ data }) =>
+          client.mutate({
+            mutation: mutations.setIsLoggedIn,
+            variables: { input: { token: data.user.token } },
+          })
+        )
+        .catch(({ graphQLErrors }) => {
+          return formatServerErrors(graphQLErrors);
+        });
+    },
+  })
+)(Login);

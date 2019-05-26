@@ -1,15 +1,7 @@
-import React from 'react';
 import App, { Container } from 'next/app';
-import { ApolloProvider, Query } from 'react-apollo';
+import { ApolloProvider } from 'react-apollo';
 import withApolloClient from '../client/apollo/with-apollo';
-import * as queries from '../client/apollo/graphql/queries.graphql';
 import '../client/styles/semantic.less';
-
-interface Data {
-  app: {
-    isLoggedIn: boolean;
-  };
-}
 
 class NextApp extends App {
   public render(): any {
@@ -18,11 +10,7 @@ class NextApp extends App {
     return (
       <Container>
         <ApolloProvider client={apolloClient}>
-          <Query<Data> query={queries.getCacheApp}>
-            {({ data, error }) => {
-              return <Component {...pageProps} />;
-            }}
-          </Query>
+          <Component {...pageProps} />
         </ApolloProvider>
       </Container>
     );

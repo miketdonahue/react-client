@@ -21,6 +21,7 @@
     "baseUrl": ".",
     "paths": {
       "@config": ["config"],
+      "@client/*": ["client/*"],
       "@server/*": ["server/*"]
     }
   }

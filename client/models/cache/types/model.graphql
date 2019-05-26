@@ -1,3 +1,3 @@
 type CacheApp {
-  isLoggedIn: Boolean!
+  isAuthenticated: Boolean!
 }

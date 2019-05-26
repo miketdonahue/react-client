@@ -35,18 +35,13 @@ export const isAuthenticated = rule()(async (parent, args, context, info) => {
     }
   }
 
-  return jwt.verify(
-    token,
-    config.server.auth.jwt.secret,
-    { expiresIn: config.server.auth.jwt.expiresIn },
-    (err, decoded) => {
-      if (err) {
-        return new ExternalError(err, { source: 'JsonWebToken' });
-      }
-
-      // Add the user to context for continued access
-      ctx.user = decoded;
-      return true;
+  return jwt.verify(token, config.server.auth.jwt.secret, (err, decoded) => {
+    if (err) {
+      return new ExternalError(err, { source: 'JsonWebToken' });
     }
-  );
+
+    // Add the user to context for continued access
+    ctx.user = decoded;
+    return true;
+  });
 });

@@ -60,7 +60,7 @@ const registerUser = async (parent, args, context, info): Promise<any> => {
   const token = jwt.sign(
     { cuid: user.id, role: user.role.name },
     config.server.auth.jwt.secret,
-    { expiresIn: config.server.auth.jwt.expireTime }
+    { expiresIn: config.server.auth.jwt.expiresIn }
   );
 
   const emailType = config.server.auth.confirmable
@@ -159,7 +159,7 @@ const loginUser = async (parent, args, context, info): Promise<any> => {
   const token = jwt.sign(
     { cuid: user.id, role: user.role.name },
     config.server.auth.jwt.secret,
-    { expiresIn: config.server.auth.jwt.expireTime }
+    { expiresIn: config.server.auth.jwt.expiresIn }
   );
 
   return {

@@ -5,7 +5,7 @@ const defaultState = (data): any => {
 
   return {
     app: {
-      isLoggedIn: !!cookies.get('jwt'),
+      isAuthenticated: !!cookies.get('jwt'),
       __typename: 'CacheApp',
     },
   };

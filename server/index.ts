@@ -3,6 +3,7 @@ import express from 'express';
 import next from 'next';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
+import config from '@config';
 import csrf from 'csurf';
 import healthCheck from 'express-healthcheck';
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
@@ -10,13 +11,14 @@ import { applyMiddleware } from 'graphql-middleware';
 import { prisma } from './prisma/generated/prisma-client';
 import { normalizeError } from './modules/errors';
 import logger from './modules/logger';
-import requestLogger from './middleware/request-logger';
-import resolverLogger from './middleware/resolver-logger';
-import access from './middleware/access';
-import validations from './middleware/validations';
 import fileLoader from '../utils/node-file-loader';
 import mergeResolvers from '../utils/merge-resolvers';
-import config from '@config';
+import {
+  access,
+  validations,
+  requestLogger,
+  resolverLogger,
+} from './middleware';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -86,10 +88,7 @@ app
         directives: config.server.contentSecurityPolicy,
       })
     );
-
-    if (!dev) {
-      server.use(csrf({ cookie: true }));
-    }
+    server.use(csrf({ cookie: true }));
 
     // Apply Express middleware to GraphQL server
     apollo.applyMiddleware({

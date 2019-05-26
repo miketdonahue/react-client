@@ -5,12 +5,12 @@ const setIsLoggedIn = async (parent, args, context, info): Promise<any> => {
   cookies.set('jwt', args.input.token, { path: '/' });
 
   return context.cache.writeData({
-    data: { app: { isLoggedIn: true, __typename: 'CacheApp' } },
+    data: { app: { isAuthenticated: true, __typename: 'CacheApp' } },
   });
 };
 
 // const setLoggedOut = async (parent, args, context, info): Promise<any> => {
-//   return context.cache.writeData({ data: { isLoggedIn: false } });
+//   return context.cache.writeData({ data: { isAuthenticated: false } });
 // };
 
 export default {

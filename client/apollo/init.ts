@@ -15,7 +15,7 @@ const resolversArray = fileLoader(resolverFiles);
 const resolvers = mergeResolvers(resolversArray);
 
 interface Metadata {
-  cookies?: object;
+  cookies?: object | string;
 }
 
 export default function initApollo(initialState, { cookies }: Metadata): any {

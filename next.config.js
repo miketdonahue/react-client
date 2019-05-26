@@ -10,6 +10,7 @@ module.exports = withTypescript(
       config.resolve.alias = {
         ...config.resolve.alias,
         '@config': path.resolve(__dirname, 'config'),
+        '@client': path.resolve(__dirname, 'client'),
         '@server': path.resolve(__dirname, 'server'),
         '../../theme.config$': path.join(
           __dirname,
