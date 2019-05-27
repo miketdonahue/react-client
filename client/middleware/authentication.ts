@@ -4,12 +4,14 @@ import Cookies from 'universal-cookie';
 export const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {} }) => {
     const cookies = new Cookies();
-    const token = cookies.get('jwt');
+    const jwtToken = cookies.get('jwt');
+    const csrfToken = cookies.get('xsrf');
 
     return {
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : null,
+        authorization: jwtToken ? `Bearer ${jwtToken}` : null,
+        'CSRF-Token': csrfToken || null,
       },
     };
   });

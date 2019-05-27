@@ -42,7 +42,13 @@ const logger = defaultLogger.child({
 
       const whitelistedHeaders = (): any => {
         const headers = Object.assign({}, req.headers);
-        delete headers.authorization;
+
+        if (config.server.logger.level !== 'debug') {
+          delete headers.authorization;
+          delete headers.cookie;
+          delete headers['csrf-token'];
+        }
+
         return headers;
       };
 

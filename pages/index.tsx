@@ -1,6 +1,6 @@
 import { PureComponent } from 'react';
 import Link from 'next/link';
-import withAuthentication from '../client/components/hoc/with-authentication';
+import withAuthentication from '@client/components/hoc/with-authentication';
 
 class Index extends PureComponent {
   public render(): any {

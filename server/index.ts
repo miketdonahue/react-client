@@ -83,12 +83,12 @@ app
     server.use(requestLogger());
     server.use('/health-check', healthCheck());
     server.use(cookieParser());
+    server.use(csrf({ cookie: { key: 's_xsrf' } }));
     server.use(
       helmet.contentSecurityPolicy({
         directives: config.server.contentSecurityPolicy,
       })
     );
-    server.use(csrf({ cookie: true }));
 
     // Apply Express middleware to GraphQL server
     apollo.applyMiddleware({
@@ -103,6 +103,8 @@ app
     });
 
     server.get('*', (req, res) => {
+      res.cookie('xsrf', req.csrfToken());
+
       return handle(req, res);
     });
 
