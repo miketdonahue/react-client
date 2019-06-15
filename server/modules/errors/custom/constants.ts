@@ -29,11 +29,6 @@ export default {
     code: 'USER_NOT_FOUND',
     meta: { level: 'warn' },
   },
-  ACCOUNT_NOT_CONFIRMED: {
-    message: 'User account is not confirmed',
-    code: 'ACCOUNT_NOT_CONFIRMED',
-    meta: { level: 'warn' },
-  },
   ACCOUNT_LOCKED: {
     message: 'User account is locked',
     code: 'ACCOUNT_LOCKED',

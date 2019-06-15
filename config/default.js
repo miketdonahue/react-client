@@ -23,7 +23,6 @@ module.exports = {
       codes: {
         // time in minutes
         expireTime: {
-          confirmed: 8 * 60,
           passwordReset: 30,
           locked: 15,
         },

@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import Link from 'next/link';
 import { withFormik } from 'formik';
 import { Button, Form } from 'semantic-ui-react';
 import { withApollo, compose } from 'react-apollo';
@@ -56,6 +57,10 @@ const Login = ({
       </Form.Field>
       <Button type="submit">Login</Button>
     </Form>
+
+    <Link href="/oauth/google">
+      <a>Login with Google</a>
+    </Link>
   </Fragment>
 );
 

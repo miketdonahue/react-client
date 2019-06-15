@@ -25,7 +25,6 @@ type UserAccount {
   user: User!
   confirmed: Boolean!
   confirmedCode: Int
-  confirmedExpires: String
   locked: Boolean!
   lockedCode: Int
   lockedExpires: String

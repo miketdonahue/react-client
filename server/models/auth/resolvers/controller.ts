@@ -44,14 +44,13 @@ const registerUser = async (parent, args, context, info): Promise<any> => {
         create: config.server.auth.confirmable
           ? {
               confirmedCode: generateCode(),
-              confirmedExpires: String(
-                addHours(
-                  new Date(),
-                  config.server.auth.codes.expireTime.confirmed
-                )
-              ),
             }
-          : {},
+          : {
+              lastVisit: new Date(),
+              ip: context.req.ip,
+              loginAttempts: 0,
+              securityQuestionAttempts: 0,
+            },
       },
     })
     .$fragment(fragments.registerUserFragment);
@@ -93,7 +92,6 @@ const confirmUser = async (parent, args, context, info): Promise<any> => {
       data: {
         confirmed: true,
         confirmedCode: null,
-        confirmedExpires: null,
       },
       where: {
         confirmedCode: args.input.code,
@@ -135,10 +133,12 @@ const loginUser = async (parent, args, context, info): Promise<any> => {
           locked:
             user.userAccount.loginAttempts >=
             config.server.auth.lockable.maxAttempts,
-          lockedCode: generateCode(),
-          lockedExpires: String(
-            addHours(new Date(), config.server.auth.codes.expireTime.locked)
-          ),
+          lockedCode: user.userAccount.locked && generateCode(),
+          lockedExpires:
+            user.userAccount.locked &&
+            String(
+              addHours(new Date(), config.server.auth.codes.expireTime.locked)
+            ),
         }
       : {
           lastVisit: new Date(),

@@ -3,9 +3,12 @@ endpoint: 'http://localhost:4466'
 
 # Points to the file that contains your datamodel
 datamodel:
+  - server/prisma/models/open-auth.prisma
   - server/prisma/models/role.prisma
   - server/prisma/models/user.prisma
+  - server/prisma/models/user-account.prisma
   - server/prisma/models/security-question.prisma
+  - server/prisma/models/security-question-answer.prisma
   - server/prisma/models/customer.prisma
 
 # Specifies language & location for the generated Prisma client
@@ -20,3 +23,4 @@ seed:
 # Setup hooks for different stages of deployment
 hooks:
   post-deploy:
+    - prisma generate

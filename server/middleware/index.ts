@@ -1,3 +1,4 @@
+export { default as oauth } from './open-auth';
 export { default as access } from './access';
 export { default as requestLogger } from './request-logger';
 export { default as resolverLogger } from './resolver-logger';

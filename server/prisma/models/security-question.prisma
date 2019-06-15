@@ -6,13 +6,3 @@ type SecurityQuestion {
   createdAt: DateTime! @createdAt
   deletedAt: DateTime
 }
-
-type SecurityQuestionAnswer {
-  id: ID! @id @unique
-  userAccount: UserAccount!
-  userSecurityQuestion: SecurityQuestion!
-  answer: String!
-  updatedAt: DateTime! @updatedAt
-  createdAt: DateTime! @createdAt
-  deletedAt: DateTime
-}
