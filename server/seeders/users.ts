@@ -1,6 +1,5 @@
 /* eslint-disable no-await-in-loop */
 import argon2 from 'argon2';
-import addHours from 'date-fns/add_hours';
 import { Chance } from 'chance';
 import config from '@config';
 import { prisma } from '@server/prisma/generated/prisma-client';
@@ -43,12 +42,6 @@ export default async () => {
         create: config.server.auth.confirmable
           ? {
               confirmedCode: generateCode(),
-              confirmedExpires: String(
-                addHours(
-                  new Date(),
-                  config.server.auth.codes.expireTime.confirmed
-                )
-              ),
             }
           : {},
       },

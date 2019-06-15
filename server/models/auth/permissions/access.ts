@@ -1,8 +1,6 @@
-import { allow, and } from 'graphql-shield';
+import { allow } from 'graphql-shield';
 import {
   accountUnlocked,
-  accountConfirmed,
-  confirmationCodeNotExpired,
   resetPasswordCodeNotExpired,
   lockedCodeNotExpired,
 } from './resolvers';
@@ -18,8 +16,8 @@ export default {
   },
   Mutation: {
     registerUser: allow,
-    confirmUser: confirmationCodeNotExpired,
-    loginUser: and(accountConfirmed, accountUnlocked),
+    confirmUser: allow,
+    loginUser: accountUnlocked,
     setUserSecurityQuestionAnswers: allow,
     verifyUserSecurityQuestionAnswers: accountUnlocked,
     resetPassword: allow,

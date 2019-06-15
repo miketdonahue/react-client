@@ -3,6 +3,7 @@ import express from 'express';
 import next from 'next';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
 import config from '@config';
 import csrf from 'csurf';
 import healthCheck from 'express-healthcheck';
@@ -14,6 +15,7 @@ import logger from './modules/logger';
 import fileLoader from '../utils/node-file-loader';
 import mergeResolvers from '../utils/merge-resolvers';
 import {
+  oauth,
   access,
   validations,
   requestLogger,
@@ -83,7 +85,8 @@ app
     server.use(requestLogger());
     server.use('/health-check', healthCheck());
     server.use(cookieParser());
-    server.use(csrf({ cookie: { key: 's_xsrf' } }));
+    server.use(bodyParser.urlencoded({ extended: false }));
+    server.use(csrf({ cookie: { key: 's_csrf' } }));
     server.use(
       helmet.contentSecurityPolicy({
         directives: config.server.contentSecurityPolicy,
@@ -99,18 +102,23 @@ app
         credentials: true,
         optionsSuccessStatus: 200,
       },
-      bodyParserConfig: true,
     });
 
+    server.get('/oauth/google', oauth.google.authorize);
+    server.get(
+      '/oauth/google/callback',
+      oauth.google.verify(),
+      oauth.google.authenticate
+    );
+
     server.get('*', (req, res) => {
-      res.cookie('xsrf', req.csrfToken());
+      // Set a CSRF cookie on every get request
+      res.cookie('csrf', req.csrfToken());
 
       return handle(req, res);
     });
 
-    server.listen({ port }, err => {
-      if (err) throw err;
-
+    const serverInstance = server.listen(port, () => {
       logger.info(
         {
           host,
@@ -119,6 +127,28 @@ app
         },
         `Server has been started @ ${host}:${port}`
       );
+    });
+
+    server.on('error', (err: any) => {
+      if (err.code === 'EADDRINUSE') {
+        logger.info('Server address in use, retrying to start...');
+
+        setTimeout(() => {
+          serverInstance.close();
+          server.listen(port, () => {
+            logger.info(
+              {
+                host,
+                port,
+                env: process.env.NODE_ENV || 'development',
+              },
+              `Server has been started @ ${host}:${port}`
+            );
+          });
+        }, 1000);
+      }
+
+      throw err;
     });
   })
   .catch(err => {

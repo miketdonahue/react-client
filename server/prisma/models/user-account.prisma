@@ -1,0 +1,19 @@
+type UserAccount {
+  id: ID! @id @unique
+  user: User!
+  confirmed: Boolean! @default(value: "false")
+  confirmedCode: Int @unique
+  locked: Boolean! @default(value: "false")
+  lockedCode: Int @unique
+  lockedExpires: String
+  resetPasswordCode: Int @unique
+  resetPasswordExpires: String
+  securityQuestions: [SecurityQuestionAnswer]
+  loginAttempts: Int! @default(value: 0)
+  securityQuestionAttempts: Int! @default(value: 0)
+  lastVisit: DateTime
+  ip: String
+  updatedAt: DateTime!
+  createdAt: DateTime!
+  deletedAt: DateTime
+}

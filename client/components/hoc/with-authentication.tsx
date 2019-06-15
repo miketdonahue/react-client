@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Router from 'next/router';
-import * as queries from '../../apollo/graphql/queries.graphql';
+import * as queries from '@client/apollo/graphql/queries.graphql';
 
 const withAuthentication = (WrappedComponent): any => {
   const displayName =
@@ -8,7 +8,10 @@ const withAuthentication = (WrappedComponent): any => {
 
   return class WithAuthentication extends Component {
     public static displayName = `WithAuthentication(${displayName})`;
-    public static async getInitialProps({ apolloClient, res }): Promise<any> {
+    public static async getInitialProps(context): Promise<any> {
+      const { apolloClient, res } = context;
+      let appProps = {};
+
       const {
         data: {
           app: { isAuthenticated },
@@ -26,7 +29,11 @@ const withAuthentication = (WrappedComponent): any => {
         }
       }
 
-      return { isAuthenticated };
+      if (WrappedComponent.getInitialProps) {
+        appProps = await WrappedComponent.getInitialProps(context);
+      }
+
+      return { ...appProps };
     }
 
     public render(): any {

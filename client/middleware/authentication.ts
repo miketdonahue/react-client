@@ -5,7 +5,7 @@ export const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {} }) => {
     const cookies = new Cookies();
     const jwtToken = cookies.get('jwt');
-    const csrfToken = cookies.get('xsrf');
+    const csrfToken = cookies.get('csrf');
 
     return {
       headers: {

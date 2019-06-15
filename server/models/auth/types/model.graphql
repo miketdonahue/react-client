@@ -1,0 +1,16 @@
+type OpenAuth {
+  id: ID!
+  user: User!
+  provider: ProviderName!
+  accessToken: String!
+  refreshToken: String
+  expiresAt: String!
+  updatedAt: String!
+  createdAt: String!
+  deletedAt: String
+}
+
+# Enums
+enum ProviderName {
+  GOOGLE
+}
