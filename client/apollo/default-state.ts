@@ -13,10 +13,8 @@ const defaultState = (data): any => {
     }
 
     return {
-      app: {
-        isAuthenticated,
-        __typename: 'CacheApp',
-      },
+      isAuthenticated,
+      __typename: 'clientCache',
     };
   });
 };

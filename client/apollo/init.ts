@@ -18,14 +18,16 @@ interface Metadata {
   cookies?: object | string;
 }
 
-export default function initApollo(initialState, { cookies }: Metadata): any {
+let apolloClient = null;
+
+const createApolloClient = (initialState, { cookies }: Metadata): any => {
   const state: any = merge({ ...initialState }, defaultState({ cookies }));
   const cache = new InMemoryCache();
 
   // Load initial state into cache
   cache.writeData({ data: { ...state } });
 
-  const apolloClient = new ApolloClient({
+  const client = new ApolloClient({
     name: 'web',
     ssrMode: !process.browser,
     link: from([authMiddleware, httpMiddleware]),
@@ -34,5 +36,24 @@ export default function initApollo(initialState, { cookies }: Metadata): any {
     resolvers,
   });
 
+  return client;
+};
+
+export default function initApollo(initialState, { cookies }: Metadata): any {
+  // Create a new Apollo Client for every server-side request
+  // so data is not shared between connections
+  if (!process.browser) {
+    console.log('init apollo server side');
+    return createApolloClient(initialState, { cookies });
+  }
+
+  // Ensure Apollo Client is reused client-side for continued
+  // access to the cache
+  if (!apolloClient) {
+    console.log('init apollo client side');
+    apolloClient = createApolloClient(initialState, { cookies });
+  }
+
+  console.log('continue with apollo');
   return apolloClient;
 }

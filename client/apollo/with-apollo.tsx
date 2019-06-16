@@ -14,7 +14,7 @@ export default function withApolloClient(App): any {
     public constructor(props) {
       super(props);
 
-      this.apolloClient = initApollo(props.state, {
+      this.apolloClient = initApollo(props.cache, {
         cookies: process.browser ? document.cookie : '',
       });
     }

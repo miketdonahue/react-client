@@ -13,9 +13,7 @@ const withAuthentication = (WrappedComponent): any => {
       let appProps = {};
 
       const {
-        data: {
-          app: { isAuthenticated },
-        },
+        data: { isAuthenticated },
       } = await apolloClient.query({
         query: queries.getCacheApp,
       });
