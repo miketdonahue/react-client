@@ -2,6 +2,7 @@ extend type Query {
   getUserSecurityQuestionAnswers(
     input: UserSecurityQuestionAnswerInput!
   ): [SecurityQuestionAnswer]
+  isAuthenticated(input: IsAuthenticatedInput!): Boolean
 }
 
 extend type Mutation {

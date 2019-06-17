@@ -22,6 +22,7 @@
     "paths": {
       "@config": ["config"],
       "@client/*": ["client/*"],
+      "@pages/*": ["pages/*"],
       "@server/*": ["server/*"]
     }
   }

@@ -1,0 +1,3 @@
+query isAuthenticated($input: IsAuthenticatedInput!) {
+  isAuthenticated(input: $input)
+}

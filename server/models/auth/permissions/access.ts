@@ -13,6 +13,7 @@ import {
 export default {
   Query: {
     getUserSecurityQuestionAnswers: allow,
+    isAuthenticated: allow,
   },
   Mutation: {
     registerUser: allow,

@@ -41,6 +41,10 @@ input SendAuthEmail {
   type: EmailType!
 }
 
+input IsAuthenticatedInput {
+  token: String!
+}
+
 # Nested inputs
 input SecurityQuestionAnswerInput {
   shortName: String!

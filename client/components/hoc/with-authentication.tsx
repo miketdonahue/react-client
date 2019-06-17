@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Router from 'next/router';
+import Cookies from 'universal-cookie';
 import * as queries from '@client/apollo/graphql/queries.graphql';
 
 const withAuthentication = (WrappedComponent): any => {
@@ -9,18 +10,24 @@ const withAuthentication = (WrappedComponent): any => {
   return class WithAuthentication extends Component {
     public static displayName = `WithAuthentication(${displayName})`;
     public static async getInitialProps(context): Promise<any> {
-      const { apolloClient, res } = context;
+      const { apolloClient, req, res } = context;
       let appProps = {};
+      const universalCookies = process.browser
+        ? document.cookie
+        : req.headers.cookie;
+      const cookies = new Cookies(universalCookies);
+      const token = cookies.get('jwt') || '';
 
       const {
         data: { isAuthenticated },
       } = await apolloClient.query({
-        query: queries.getCacheApp,
+        query: queries.isAuthenticated,
+        variables: { input: { token } },
       });
 
       if (!isAuthenticated) {
         if (res) {
-          res.writeHead(303, { Location: '/login' });
+          res.writeHead(302, { Location: '/login' });
           res.end();
         } else {
           Router.replace('/login');

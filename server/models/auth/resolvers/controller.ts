@@ -435,9 +435,32 @@ const sendAuthEmail = async (parent, args, context, info): Promise<any> => {
   return null;
 };
 
+/**
+ * Checks if a user is authenticated
+ *
+ * @async
+ * @function
+ * @param {Object} parent - Parent resolver
+ * @param {Object} args - User input arguments
+ * @param {Object} context - Global resolver store
+ * @param {AST} info - GraphQL metadata
+ * @returns {Boolean}
+ */
+const isAuthenticated = async (parent, args, context, info): Promise<any> => {
+  return jwt.verify(
+    args.input.token,
+    config.server.auth.jwt.secret,
+    (err, decoded) => {
+      if (decoded) return true;
+      return false;
+    }
+  );
+};
+
 export default {
   Query: {
     getUserSecurityQuestionAnswers,
+    isAuthenticated,
   },
   Mutation: {
     registerUser,

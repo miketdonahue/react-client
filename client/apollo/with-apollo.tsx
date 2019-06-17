@@ -5,6 +5,9 @@ import initApollo from './init';
 
 export default function withApolloClient(App): any {
   const displayName = App.displayName || App.name || 'Component';
+  const getCookies = (req?): any => {
+    return req ? req.headers.cookie || '' : document.cookie;
+  };
 
   return class ApolloClient extends React.Component {
     public static displayName = `WithApollo(${displayName})`;
@@ -15,16 +18,14 @@ export default function withApolloClient(App): any {
       super(props);
 
       this.apolloClient = initApollo(props.cache, {
-        cookies: process.browser ? document.cookie : '',
+        cookies: () => getCookies(),
       });
     }
 
     public static async getInitialProps(context): Promise<any> {
       const { Component, router, ctx } = context;
-      const cookies = !process.browser ? ctx.req.cookies : document.cookie;
-
       let appProps = {};
-      const apollo = initApollo({}, { cookies });
+      const apollo = initApollo({}, { cookies: () => getCookies(ctx.req) });
       const cache = apollo.cache.extract();
 
       // Add apollo client to the `getInitialProps` context
