@@ -2,7 +2,7 @@ import { ApolloClient } from 'apollo-client';
 import { from } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { httpMiddleware, authMiddleware } from '../middleware';
-import { fileLoader } from '../../utils/webpack-file-loader';
+import fileLoader from '../../utils/webpack-file-loader';
 import mergeResolvers from '../../utils/merge-resolvers';
 
 // Register types and resolvers
