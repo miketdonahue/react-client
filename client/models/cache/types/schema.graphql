@@ -1,8 +1,7 @@
 extend type Query {
-  app: CacheApp
+  isAuthenticated: Boolean!
 }
 
-# TODO: Needs to be an input type
 extend type Mutation {
   setIsLoggedIn(input: SetIsLoggedInInput!): String
 }

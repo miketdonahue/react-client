@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 import { withFormik } from 'formik';
 import { Button, Form } from 'semantic-ui-react';
 import { withApollo, compose } from 'react-apollo';
@@ -85,12 +86,14 @@ export default compose(
             input: { email: values.email, password: values.password },
           },
         })
-        .then(({ data }) =>
-          client.mutate({
+        .then(async ({ data }) => {
+          await client.mutate({
             mutation: mutations.setIsLoggedIn,
             variables: { input: { token: data.user.token } },
-          })
-        )
+          });
+
+          return Router.push('/');
+        })
         .catch(({ graphQLErrors }) => {
           return formatServerErrors(graphQLErrors);
         });

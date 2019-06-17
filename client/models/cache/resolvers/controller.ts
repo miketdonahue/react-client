@@ -5,7 +5,7 @@ const setIsLoggedIn = async (parent, args, context, info): Promise<any> => {
   cookies.set('jwt', args.input.token, { path: '/' });
 
   return context.cache.writeData({
-    data: { app: { isAuthenticated: true, __typename: 'CacheApp' } },
+    data: { isAuthenticated: true, __typename: 'clientCache' },
   });
 };
 
