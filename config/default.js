@@ -49,6 +49,7 @@ module.exports = {
     dirs: {
       types: 'models/**/types/*.graphql',
       resolvers: 'models/**/resolvers/*.js',
+      routes: 'pages/**/routes.js',
       access: 'server/models/**/access.js',
       validations: 'server/models/**/validations.js',
     },

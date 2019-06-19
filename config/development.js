@@ -44,6 +44,7 @@ module.exports = merge(defaultConfig, {
     dirs: {
       types: 'models/**/types/*.graphql',
       resolvers: 'models/**/resolvers/*.ts',
+      routes: 'pages/**/routes.ts',
       access: 'server/models/**/access.ts',
       validations: 'server/models/**/validations.ts',
     },

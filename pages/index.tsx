@@ -1,8 +1,17 @@
 import { Component } from 'react';
 import Link from 'next/link';
-import Router from 'next/router';
+import Router, { withRouter } from 'next/router';
 import Cookies from 'universal-cookie';
-import withAuthentication from '@client/components/hoc/with-authentication';
+
+const PostLink = (props): any => {
+  const { id, title } = props;
+
+  return (
+    <Link as={`/posts/${id}`} href={`/post?id=${id}`}>
+      <a>{title}</a>
+    </Link>
+  );
+};
 
 class Index extends Component {
   private logout = () => {
@@ -23,7 +32,21 @@ class Index extends Component {
             </Link>
           </li>
         </ul>
-        <p>Home Page</p>
+        <h2>Posts</h2>
+        <ul>
+          <li>
+            <PostLink id="web-app-security" title="Web application security" />
+          </li>
+          <li>
+            <PostLink
+              id="nodejs-web-server"
+              title="Create a Node.js web server"
+            />
+          </li>
+          <li>
+            <PostLink id="css-in-js" title="Using CSS in JS" />
+          </li>
+        </ul>
         <button onClick={this.logout} type="button">
           Logout
         </button>
@@ -32,4 +55,4 @@ class Index extends Component {
   }
 }
 
-export default withAuthentication(Index);
+export default withRouter(Index);

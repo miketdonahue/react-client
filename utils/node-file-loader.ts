@@ -43,12 +43,17 @@ const DEFAULT_EXTENSIONS = ['.ts', '.js', '.gql', '.graphql', '.graphqls'];
 
 const fileLoader = (
   folderPath,
-  { recursive = false, extensions = DEFAULT_EXTENSIONS, globOptions = {} } = {}
+  {
+    recursive = false,
+    extensions = DEFAULT_EXTENSIONS,
+    globOptions = {},
+    flatten = false,
+  } = {}
 ) => {
   const dir = folderPath;
   const schemafiles = getSchemaFiles(dir, recursive, globOptions);
 
-  const files = schemafiles
+  let files = schemafiles
     .map(f => ({ f, pathObj: path.parse(f) }))
     .filter(({ pathObj }) => pathObj.name.toLowerCase() !== 'index')
     .filter(({ pathObj }) => extensions.includes(pathObj.ext))
@@ -78,6 +83,10 @@ const fileLoader = (
       return returnVal;
     })
     .filter(v => !!v); // filter files that we don't know how to handle
+
+  if (flatten) {
+    files = files.flat();
+  }
 
   return files;
 };
