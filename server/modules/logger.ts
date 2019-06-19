@@ -77,11 +77,14 @@ const logger = defaultLogger.child({
     args: args => {
       const whitelistArgs = Object.assign({}, { ...args.input });
 
-      delete whitelistArgs.firstName;
-      delete whitelistArgs.lastName;
-      delete whitelistArgs.email;
-      delete whitelistArgs.password;
-      delete whitelistArgs.answers;
+      if (config.server.logger.level !== 'debug') {
+        delete whitelistArgs.firstName;
+        delete whitelistArgs.lastName;
+        delete whitelistArgs.email;
+        delete whitelistArgs.password;
+        delete whitelistArgs.answers;
+        delete whitelistArgs.token;
+      }
 
       return { ...whitelistArgs };
     },

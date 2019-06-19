@@ -1,3 +1,3 @@
 extend type Mutation {
-  updateUser(input: UpdateUserInput!): User
+  updateUser(input: UpdateUserInput!): User!
 }

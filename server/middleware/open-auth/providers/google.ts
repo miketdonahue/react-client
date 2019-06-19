@@ -4,6 +4,7 @@ import { prisma } from '@server/prisma/generated/prisma-client';
 import config from '@config';
 import generateCode from '@server/modules/code';
 import logger from '@server/modules/logger';
+import uuid from 'uuid/v4';
 import { jwtUserFragment, userAccountFragment } from '../fragments';
 
 const oauthConfig = {
@@ -20,9 +21,13 @@ export const authorize = (req, res): any => {
   );
 
   const scopes = ['openid', 'email'];
+  const state = jwt.sign({ state: uuid() }, config.server.auth.jwt.secret, {
+    expiresIn: '1m',
+  });
 
   const url = oauth2Client.generateAuthUrl({
     access_type: 'offline',
+    state,
     scope: scopes,
   });
 
@@ -31,7 +36,7 @@ export const authorize = (req, res): any => {
     'OPEN-AUTH-MIDDLEWARE: Redirecting to provider'
   );
 
-  res.redirect(302, url);
+  return res.redirect(302, url);
 };
 
 export const verify = (): any => {
@@ -42,10 +47,20 @@ export const verify = (): any => {
   );
 
   return async (req, res, next) => {
-    const { code } = req.query;
+    const { code, state } = req.query;
+    const verifiedState = jwt.verify(state, config.server.auth.jwt.secret);
     const { tokens } = await oauth2Client.getToken(code);
     const { email } = jwt.decode(tokens.id_token);
     let user: any = await prisma.user({ email }).$fragment(jwtUserFragment);
+
+    if (!verifiedState) {
+      logger.error(
+        { state: verifiedState.state },
+        'OPEN-AUTH-MIDDLEWARE: Could not verify oauth state session value'
+      );
+
+      return res.redirect(302, oauthConfig.failureRedirect);
+    }
 
     if (!user) {
       const role: any = await prisma.role({ name: 'USER' });
@@ -117,11 +132,11 @@ export const verify = (): any => {
         'OPEN-AUTH-MIDDLEWARE: Could not update or add open auth details to database'
       );
 
-      res.redirect(302, oauthConfig.failureRedirect);
+      return res.redirect(302, oauthConfig.failureRedirect);
     }
 
     req.user = user;
-    next();
+    return next();
   };
 };
 
@@ -148,7 +163,7 @@ export const authenticate = async (req, res): Promise<any> => {
       'OPEN-AUTH-MIDDLEWARE: Could not update user account database table'
     );
 
-    res.redirect(302, oauthConfig.failureRedirect);
+    return res.redirect(302, oauthConfig.failureRedirect);
   }
 
   logger.info(
@@ -168,5 +183,5 @@ export const authenticate = async (req, res): Promise<any> => {
   );
 
   res.cookie('jwt', token, { path: '/' });
-  res.redirect(oauthConfig.successRedirect);
+  return res.redirect(302, oauthConfig.successRedirect);
 };

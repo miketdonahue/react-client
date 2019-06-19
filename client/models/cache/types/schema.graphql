@@ -1,7 +1,3 @@
-extend type Query {
-  isAuthenticated: Boolean!
-}
-
 extend type Mutation {
-  setIsLoggedIn(input: SetIsLoggedInInput!): String
+  setIsLoggedIn(input: SetIsLoggedInInput!): String!
 }

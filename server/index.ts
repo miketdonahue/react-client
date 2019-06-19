@@ -15,7 +15,6 @@ import logger from './modules/logger';
 import fileLoader from '../utils/node-file-loader';
 import mergeResolvers from '../utils/merge-resolvers';
 import {
-  oauth,
   access,
   validations,
   requestLogger,
@@ -27,11 +26,13 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 const typesDir = path.join(__dirname, config.server.dirs.types);
 const resolversDir = path.join(__dirname, config.server.dirs.resolvers);
+const routesDir = path.join(process.cwd(), config.server.dirs.routes);
 
 // Register types and resolvers
 const typesArray = fileLoader(typesDir);
 const resolversArray = fileLoader(resolversDir);
 const resolvers = mergeResolvers(resolversArray);
+const routes = fileLoader(routesDir, { flatten: true });
 
 // Set up root types
 const rootTypes = `
@@ -105,12 +106,22 @@ app
       bodyParserConfig: true,
     });
 
-    server.get('/oauth/google', oauth.google.authorize);
-    server.get(
-      '/oauth/google/callback',
-      oauth.google.verify(),
-      oauth.google.authenticate
-    );
+    routes.forEach(function defineRoutes(obj) {
+      const { route, page = null, middleware = [], controller = null } = obj;
+
+      if (!page) {
+        server.get(route, middleware, controller);
+      }
+
+      server.get(route, (req, res) =>
+        app.render(
+          req,
+          res,
+          `/${page}`,
+          Object.assign({}, req.query, req.params)
+        )
+      );
+    });
 
     server.get('*', (req, res) => {
       // Set a CSRF cookie on every get request
