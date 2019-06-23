@@ -1,5 +1,4 @@
 import { Fragment } from 'react';
-import Link from 'next/link';
 import Router from 'next/router';
 import { withFormik } from 'formik';
 import { Button, Form } from 'semantic-ui-react';
@@ -59,9 +58,7 @@ const LoginView = ({
       <Button type="submit">Login</Button>
     </Form>
 
-    <Link href="/oauth/google">
-      <a>Login with Google</a>
-    </Link>
+    <a href="/oauth/google">Login with Google</a>
   </Fragment>
 );
 

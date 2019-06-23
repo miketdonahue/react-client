@@ -20,7 +20,7 @@ export const authorize = (req, res): any => {
     oauthConfig.callbackUrl
   );
 
-  const scopes = ['openid', 'email'];
+  const scopes = ['https://www.googleapis.com/auth/userinfo.email'];
   const state = jwt.sign({ state: uuid() }, config.server.auth.jwt.secret, {
     expiresIn: '1m',
   });
